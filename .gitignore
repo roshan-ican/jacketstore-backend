@@ -1,0 +1,17 @@
+# Ignore Go build output
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+
+# Ignore system files
+.DS_Store
+
+# Ignore Go modules cache (optional)
+vendor/
