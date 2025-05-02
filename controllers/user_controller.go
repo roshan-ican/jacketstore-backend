@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/roshan-ican/jacketstore-backend/config"
 	"github.com/roshan-ican/jacketstore-backend/models"
+	openai "github.com/sashabaranov/go-openai"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
@@ -109,5 +110,35 @@ func LoginUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login successful!",
 		"user_id": user.ID.Hex(),
+	})
+}
+
+func PostDallePrompt(c *gin.Context) {
+	fmt.Println("🔥 POST /dalle hit!")
+	var requestBody struct {
+		Prompt string `json:"prompt"`
+	}
+
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	resp, err := config.OpenAIClient.CreateImage(ctx, openai.ImageRequest{
+		Prompt:         requestBody.Prompt,
+		N:              1,
+		Size:           "512x512",
+		ResponseFormat: "url",
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "OpenAI API error", "details": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"photo": resp.Data[0].URL,
 	})
 }

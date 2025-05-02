@@ -1,14 +1,14 @@
 package main
 
 import (
-	"log"
 	"github.com/gin-gonic/gin"
 	"github.com/roshan-ican/jacketstore-backend/config"
-    "github.com/roshan-ican/jacketstore-backend/routes"
+	"github.com/roshan-ican/jacketstore-backend/routes"
 )
 
 func main() {
 	config.ConnectDB()
+	config.InitOpenAI()
 
 	r := gin.Default()
 
@@ -19,8 +19,13 @@ func main() {
 			"message": "Drip Jacket Store backend is healthy! 🚀",
 		})
 	})
+
+	
+
+
  // User Routes
  routes.UserRoutes(r)
-	log.Println("🚀 App running on http://localhost:8080")
-	r.Run() // Default listens on :808
+//  routes.DalleRoutes(r)
+// 	log.Println("🚀 App running on http://localhost:8080")
+// 	r.Run() // Default listens on :808
 }
