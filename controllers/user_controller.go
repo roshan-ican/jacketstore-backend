@@ -114,7 +114,8 @@ func LoginUser(c *gin.Context) {
 }
 
 func PostDallePrompt(c *gin.Context) {
-	fmt.Println("🔥 POST /dalle hit!")
+	fmt.Println("🔥 POST /users/dalle hit!")
+
 	var requestBody struct {
 		Prompt string `json:"prompt"`
 	}
@@ -134,7 +135,10 @@ func PostDallePrompt(c *gin.Context) {
 		ResponseFormat: "url",
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "OpenAI API error", "details": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "OpenAI API error",
+			"details": err.Error(),
+		})
 		return
 	}
 

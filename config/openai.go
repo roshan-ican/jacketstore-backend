@@ -1,14 +1,9 @@
 package config
 
-import (
-	"os"
-
-	openai "github.com/sashabaranov/go-openai"
-)
+import "github.com/sashabaranov/go-openai"
 
 var OpenAIClient *openai.Client
 
-func InitOpenAI() {
-	apiKey := os.Getenv("OPENAI_API_KEY")
+func InitOpenAIClient(apiKey string) {
 	OpenAIClient = openai.NewClient(apiKey)
 }
