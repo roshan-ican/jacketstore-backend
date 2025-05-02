@@ -15,3 +15,4 @@ bin/
 
 # Ignore Go modules cache (optional)
 vendor/
+.env
